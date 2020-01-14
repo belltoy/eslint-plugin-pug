@@ -7,7 +7,7 @@ test('lint js in pug', t => {
 	const cli = new CLIEngine({
 		envs: ["browser"],
 		useEslintrc: false,
-		rules: { semi: 2 }
+		rules: { semi: 'error' }
 	})
 	cli.addPlugin('eslint-plugin-pug', plugin)
 	const report = cli.executeOnFiles(['fixture.pug'])

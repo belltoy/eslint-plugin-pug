@@ -8,13 +8,15 @@ var extractions = []
 
 function isValidScript (node) {
 	return node.type === 'Tag' && node.name === 'script'
-		&& node.attrs.filter(function (attr) { return attr.val.toString().replace(/['"]/g, '') !== 'text/javascript' }).length <= 0
+		&& node.attrs.filter(function (attr) {
+            return attr.name.toLowerCase() === 'type' && attr.val.toLowerCase().replace(/['"]/g, '') !== 'text/javascript';
+        }).length <= 0
 }
 
 var pugProcessor = {
 	preprocess: function (text, filename) {
 		extractions = walkExtract(parser(lexer(text, {filename: filename}), {filename: filename}), text, isValidScript)
-		return extractions.map(function (x) { return x.text })
+		return extractions.map(function (x) { return x.text + '\n' })
 	},
 	postprocess: function (messages, filename) {
 		var results = []
